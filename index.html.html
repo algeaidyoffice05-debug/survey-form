@@ -1,0 +1,2370 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استبيان القوة - نموذج</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .form-header h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-header p {
+            font-size: 17px;
+            opacity: 0.95;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-body {
+            padding: 50px 40px;
+        }
+
+        .form-info {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-right: 5px solid #1e3c72;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 3px 10px rgba(30, 60, 114, 0.1);
+        }
+
+        .form-info h3 {
+            color: #1e3c72;
+            font-size: 18px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .form-info ul {
+            list-style: none;
+            padding-right: 0;
+        }
+
+        .form-info li {
+            color: #0d47a1;
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-right: 25px;
+            position: relative;
+        }
+
+        .form-info li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            color: #1e3c72;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .question-card {
+            background: #fafafa;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .question-card:hover {
+            border-color: #1e3c72;
+            box-shadow: 0 8px 20px rgba(30, 60, 114, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            margin-left: 15px;
+            box-shadow: 0 4px 10px rgba(30, 60, 114, 0.3);
+        }
+
+        .question-title {
+            font-size: 16px;
+            color: #424242;
+            font-weight: 600;
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-item {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .option-item:hover {
+            border-color: #9e9e9e;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .option-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .option-code {
+            background: #6c757d;
+            color: white;
+            min-width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            margin-left: 15px;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 15px;
+            color: #616161;
+            line-height: 1.6;
+            padding-top: 5px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 12px;
+            padding-right: 53px;
+        }
+
+        .radio-option {
+            position: relative;
+        }
+
+        .radio-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            height: 45px;
+            background: white;
+            border: 2px solid #bdbdbd;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            color: #616161;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .radio-option input[type="radio"]:checked + .radio-label {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-color: #1e3c72;
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
+            transform: scale(1.1);
+        }
+
+        .radio-label:hover {
+            border-color: #1e3c72;
+            transform: translateY(-2px);
+        }
+
+        .sum-indicator {
+            margin-top: 20px;
+            padding: 18px 25px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .sum-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #424242;
+        }
+
+        .sum-value-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sum-value {
+            min-width: 65px;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 20px;
+            font-weight: 800;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .sum-value.neutral {
+            background: #9e9e9e;
+            color: white;
+        }
+
+        .sum-value.valid {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+            animation: successPulse 0.6s ease;
+        }
+
+        .sum-value.invalid {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+            animation: errorShake 0.5s ease;
+        }
+
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .status-badge {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-badge.valid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.invalid {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .form-footer {
+            background: #f5f5f5;
+            padding: 40px;
+            text-align: center;
+            border-top: 3px solid #e0e0e0;
+        }
+
+        .progress-info {
+            margin-bottom: 25px;
+            font-size: 16px;
+            color: #424242;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 18px 60px;
+            border-radius: 35px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 25px rgba(30, 60, 114, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(30, 60, 114, 0.5);
+        }
+
+        .submit-button:active:not(:disabled) {
+            transform: translateY(-1px);
+        }
+
+        .submit-button:disabled {
+            background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+        }
+
+        .alert {
+            padding: 25px 30px;
+            margin: 30px 40px;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border-right: 6px solid #dc3545;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border-right: 6px solid #28a745;
+        }
+
+        .alert strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .form-body {
+                padding: 30px 20px;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+
+            .radio-group {
+                padding-right: 0;
+                justify-content: center;
+            }
+
+            .option-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .option-code {
+                margin-left: 0;
+                margin-bottom: 10px;
+            }
+
+            .sum-value-wrapper {
+                flex-direction: column;
+            }
+
+            .form-header {
+                padding: 30px 20px;
+            }
+
+            .form-header h1 {
+                font-size: 28px;
+            }
+        }
+
+        .required-mark {
+            color: #dc3545;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+    
+        /* Summary Section Styles */
+        .summary-section {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe8a1 100%);
+            border-right: 5px solid #ff9800;
+            padding: 35px;
+            border-radius: 15px;
+            margin: 40px 0;
+            box-shadow: 0 5px 20px rgba(255, 152, 0, 0.2);
+        }
+
+        .summary-section h3 {
+            color: #e65100;
+            font-size: 24px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .totals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .total-item {
+            background: white;
+            padding: 25px 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 3px solid #e0e0e0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .total-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .total-item.highest {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            box-shadow: 0 0 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .total-item.highest::before {
+            content: '⭐';
+            position: absolute;
+            top: -15px;
+            right: -10px;
+            font-size: 28px;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .total-letter {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1e3c72;
+            margin-bottom: 12px;
+        }
+
+        .total-item.highest .total-letter {
+            color: #155724;
+        }
+
+        .total-value {
+            font-size: 36px;
+            font-weight: 900;
+            color: #424242;
+            position: relative;
+        }
+
+        .total-item.highest .total-value {
+            color: #28a745;
+        }
+
+        .total-item.highest .total-value::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border: 4px solid #28a745;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: circlePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes circlePulse {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1); 
+                opacity: 1; 
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.4); 
+                opacity: 0.3; 
+            }
+        }
+
+        .grand-total {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 3px solid #1e3c72;
+            box-shadow: 0 5px 20px rgba(30, 60, 114, 0.3);
+        }
+
+        .grand-total-label {
+            font-size: 20px;
+            color: #424242;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .grand-total-value {
+            font-size: 52px;
+            font-weight: 900;
+            color: #1e3c72;
+        }
+
+        .grand-total.valid {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+
+        .grand-total.valid .grand-total-value {
+            color: #28a745;
+        }
+
+        .grand-total.invalid {
+            border-color: #dc3545;
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        }
+
+        .grand-total.invalid .grand-total-value {
+            color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .totals-grid {
+                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+                gap: 12px;
+            }
+            
+            .summary-section {
+                padding: 25px 20px;
+            }
+        }
+</style>
+</head>
+<body>
+    <form class="form-container" id="surveyForm">
+        <div class="form-header">
+            <h1>📋 استبيان القوة</h1>
+            <p>إن الأشخاص الذين أعمل معهم يتبعون مقترحاتي للأسباب التالية</p>
+        </div>
+
+        <div id="alert-container"></div>
+
+        <div class="form-body">
+            <div class="form-info">
+                <h3>📌 تعليمات مهمة:</h3>
+                <ul>
+                    <li>يجب الإجابة على جميع الأسئلة (21 سؤال)</li>
+                    <li>كل سؤال يحتوي على خيارين - اختر قيمة من 0 إلى 3 لكل خيار</li>
+                    <li>مجموع القيمتين يجب أن يساوي 3 بالضبط</li>
+                    <li>سيظهر لون أخضر عند الإجابة الصحيحة وأحمر عند الخطأ</li>
+                </ul>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">1</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">أ</div>
+                            <div class="option-text">لأنني أستطيع " معاقبة " أولئك الذين لا يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q1_a" data-letter="أ" id="q1_a_0" value="0" required>
+                                <label class="radio-label" for="q1_a_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q1_a" data-letter="أ" id="q1_a_1" value="1">
+                                <label class="radio-label" for="q1_a_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q1_a" data-letter="أ" id="q1_a_2" value="2">
+                                <label class="radio-label" for="q1_a_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q1_a" data-letter="أ" id="q1_a_3" value="3">
+                                <label class="radio-label" for="q1_a_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ب</div>
+                            <div class="option-text">لأنهم يدركون بأنني على اتصال بأشخاص يتمتعون بأهمية ونفوذ كبيرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q1_b" data-letter="ب" id="q1_b_0" value="0" required>
+                                <label class="radio-label" for="q1_b_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q1_b" data-letter="ب" id="q1_b_1" value="1">
+                                <label class="radio-label" for="q1_b_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q1_b" data-letter="ب" id="q1_b_2" value="2">
+                                <label class="radio-label" for="q1_b_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q1_b" data-letter="ب" id="q1_b_3" value="3">
+                                <label class="radio-label" for="q1_b_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 1:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="1">0</span>
+                        <span class="status-badge" data-status="1"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">2</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ج</div>
+                            <div class="option-text">لأنهم يحترمون ما لدي من معرفة وقدرة وخبرة واجتهاد في تقدير الأمور</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q2_c" data-letter="ج" id="q2_c_0" value="0" required>
+                                <label class="radio-label" for="q2_c_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q2_c" data-letter="ج" id="q2_c_1" value="1">
+                                <label class="radio-label" for="q2_c_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q2_c" data-letter="ج" id="q2_c_2" value="2">
+                                <label class="radio-label" for="q2_c_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q2_c" data-letter="ج" id="q2_c_3" value="3">
+                                <label class="radio-label" for="q2_c_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">د</div>
+                            <div class="option-text">لأنني استطيع الوصول الى معلومات ذات قيمة بالنسبة للآخرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q2_d" data-letter="د" id="q2_d_0" value="0" required>
+                                <label class="radio-label" for="q2_d_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q2_d" data-letter="د" id="q2_d_1" value="1">
+                                <label class="radio-label" for="q2_d_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q2_d" data-letter="د" id="q2_d_2" value="2">
+                                <label class="radio-label" for="q2_d_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q2_d" data-letter="د" id="q2_d_3" value="3">
+                                <label class="radio-label" for="q2_d_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 2:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="2">0</span>
+                        <span class="status-badge" data-status="2"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">3</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">هـ</div>
+                            <div class="option-text">لأن مركزي في الشركة يمنحني السلطة لإدارة أنشطة أعمالها</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q3_e" data-letter="هـ" id="q3_e_0" value="0" required>
+                                <label class="radio-label" for="q3_e_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q3_e" data-letter="هـ" id="q3_e_1" value="1">
+                                <label class="radio-label" for="q3_e_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q3_e" data-letter="هـ" id="q3_e_2" value="2">
+                                <label class="radio-label" for="q3_e_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q3_e" data-letter="هـ" id="q3_e_3" value="3">
+                                <label class="radio-label" for="q3_e_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">و</div>
+                            <div class="option-text">لأنهم يقدرونني ويريدون إرضائي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q3_f" data-letter="و" id="q3_f_0" value="0" required>
+                                <label class="radio-label" for="q3_f_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q3_f" data-letter="و" id="q3_f_1" value="1">
+                                <label class="radio-label" for="q3_f_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q3_f" data-letter="و" id="q3_f_2" value="2">
+                                <label class="radio-label" for="q3_f_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q3_f" data-letter="و" id="q3_f_3" value="3">
+                                <label class="radio-label" for="q3_f_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 3:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="3">0</span>
+                        <span class="status-badge" data-status="3"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">4</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ز</div>
+                            <div class="option-text">لأنني أستطيع مكافئة ودعم / مساندة من يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q4_g" data-letter="ز" id="q4_g_0" value="0" required>
+                                <label class="radio-label" for="q4_g_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q4_g" data-letter="ز" id="q4_g_1" value="1">
+                                <label class="radio-label" for="q4_g_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q4_g" data-letter="ز" id="q4_g_2" value="2">
+                                <label class="radio-label" for="q4_g_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q4_g" data-letter="ز" id="q4_g_3" value="3">
+                                <label class="radio-label" for="q4_g_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">أ</div>
+                            <div class="option-text">لأنني أستطيع " معاقبة " أولئك الذين لا يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q4_a" data-letter="أ" id="q4_a_0" value="0" required>
+                                <label class="radio-label" for="q4_a_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q4_a" data-letter="أ" id="q4_a_1" value="1">
+                                <label class="radio-label" for="q4_a_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q4_a" data-letter="أ" id="q4_a_2" value="2">
+                                <label class="radio-label" for="q4_a_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q4_a" data-letter="أ" id="q4_a_3" value="3">
+                                <label class="radio-label" for="q4_a_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 4:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="4">0</span>
+                        <span class="status-badge" data-status="4"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">5</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ب</div>
+                            <div class="option-text">لأنهم يدركون بأنني على اتصال بأشخاص يتمتعون بأهمية ونفوذ كبيرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q5_b" data-letter="ب" id="q5_b_0" value="0" required>
+                                <label class="radio-label" for="q5_b_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q5_b" data-letter="ب" id="q5_b_1" value="1">
+                                <label class="radio-label" for="q5_b_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q5_b" data-letter="ب" id="q5_b_2" value="2">
+                                <label class="radio-label" for="q5_b_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q5_b" data-letter="ب" id="q5_b_3" value="3">
+                                <label class="radio-label" for="q5_b_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ج</div>
+                            <div class="option-text">لأنهم يحترمون ما لدي من معرفة وقدرة وخبرة واجتهاد في تقدير الأمور</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q5_c" data-letter="ج" id="q5_c_0" value="0" required>
+                                <label class="radio-label" for="q5_c_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q5_c" data-letter="ج" id="q5_c_1" value="1">
+                                <label class="radio-label" for="q5_c_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q5_c" data-letter="ج" id="q5_c_2" value="2">
+                                <label class="radio-label" for="q5_c_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q5_c" data-letter="ج" id="q5_c_3" value="3">
+                                <label class="radio-label" for="q5_c_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 5:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="5">0</span>
+                        <span class="status-badge" data-status="5"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">6</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">د</div>
+                            <div class="option-text">لأنني استطيع الوصول الى معلومات ذات قيمة بالنسبة للآخرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q6_d" data-letter="د" id="q6_d_0" value="0" required>
+                                <label class="radio-label" for="q6_d_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q6_d" data-letter="د" id="q6_d_1" value="1">
+                                <label class="radio-label" for="q6_d_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q6_d" data-letter="د" id="q6_d_2" value="2">
+                                <label class="radio-label" for="q6_d_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q6_d" data-letter="د" id="q6_d_3" value="3">
+                                <label class="radio-label" for="q6_d_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">هـ</div>
+                            <div class="option-text">لأن مركزي في الشركة يمنحني السلطة لإدارة أنشطة أعمالها</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q6_e" data-letter="هـ" id="q6_e_0" value="0" required>
+                                <label class="radio-label" for="q6_e_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q6_e" data-letter="هـ" id="q6_e_1" value="1">
+                                <label class="radio-label" for="q6_e_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q6_e" data-letter="هـ" id="q6_e_2" value="2">
+                                <label class="radio-label" for="q6_e_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q6_e" data-letter="هـ" id="q6_e_3" value="3">
+                                <label class="radio-label" for="q6_e_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 6:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="6">0</span>
+                        <span class="status-badge" data-status="6"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">7</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">و</div>
+                            <div class="option-text">لأنهم يقدرونني ويريدون إرضائي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q7_f" data-letter="و" id="q7_f_0" value="0" required>
+                                <label class="radio-label" for="q7_f_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q7_f" data-letter="و" id="q7_f_1" value="1">
+                                <label class="radio-label" for="q7_f_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q7_f" data-letter="و" id="q7_f_2" value="2">
+                                <label class="radio-label" for="q7_f_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q7_f" data-letter="و" id="q7_f_3" value="3">
+                                <label class="radio-label" for="q7_f_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ز</div>
+                            <div class="option-text">لأنني أستطيع مكافئة ودعم / مساندة من يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q7_g" data-letter="ز" id="q7_g_0" value="0" required>
+                                <label class="radio-label" for="q7_g_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q7_g" data-letter="ز" id="q7_g_1" value="1">
+                                <label class="radio-label" for="q7_g_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q7_g" data-letter="ز" id="q7_g_2" value="2">
+                                <label class="radio-label" for="q7_g_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q7_g" data-letter="ز" id="q7_g_3" value="3">
+                                <label class="radio-label" for="q7_g_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 7:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="7">0</span>
+                        <span class="status-badge" data-status="7"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">8</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">أ</div>
+                            <div class="option-text">لأنني أستطيع " معاقبة " أولئك الذين لا يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q8_a" data-letter="أ" id="q8_a_0" value="0" required>
+                                <label class="radio-label" for="q8_a_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q8_a" data-letter="أ" id="q8_a_1" value="1">
+                                <label class="radio-label" for="q8_a_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q8_a" data-letter="أ" id="q8_a_2" value="2">
+                                <label class="radio-label" for="q8_a_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q8_a" data-letter="أ" id="q8_a_3" value="3">
+                                <label class="radio-label" for="q8_a_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ج</div>
+                            <div class="option-text">لأنهم يحترمون ما لدي من معرفة وقدرة وخبرة واجتهاد في تقدير الأمور</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q8_c" data-letter="ج" id="q8_c_0" value="0" required>
+                                <label class="radio-label" for="q8_c_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q8_c" data-letter="ج" id="q8_c_1" value="1">
+                                <label class="radio-label" for="q8_c_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q8_c" data-letter="ج" id="q8_c_2" value="2">
+                                <label class="radio-label" for="q8_c_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q8_c" data-letter="ج" id="q8_c_3" value="3">
+                                <label class="radio-label" for="q8_c_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 8:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="8">0</span>
+                        <span class="status-badge" data-status="8"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">9</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ب</div>
+                            <div class="option-text">لأنهم يدركون بأنني على اتصال بأشخاص يتمتعون بأهمية ونفوذ كبيرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q9_b" data-letter="ب" id="q9_b_0" value="0" required>
+                                <label class="radio-label" for="q9_b_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q9_b" data-letter="ب" id="q9_b_1" value="1">
+                                <label class="radio-label" for="q9_b_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q9_b" data-letter="ب" id="q9_b_2" value="2">
+                                <label class="radio-label" for="q9_b_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q9_b" data-letter="ب" id="q9_b_3" value="3">
+                                <label class="radio-label" for="q9_b_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">د</div>
+                            <div class="option-text">لأنني استطيع الوصول الى معلومات ذات قيمة بالنسبة للآخرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q9_d" data-letter="د" id="q9_d_0" value="0" required>
+                                <label class="radio-label" for="q9_d_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q9_d" data-letter="د" id="q9_d_1" value="1">
+                                <label class="radio-label" for="q9_d_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q9_d" data-letter="د" id="q9_d_2" value="2">
+                                <label class="radio-label" for="q9_d_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q9_d" data-letter="د" id="q9_d_3" value="3">
+                                <label class="radio-label" for="q9_d_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 9:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="9">0</span>
+                        <span class="status-badge" data-status="9"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">10</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ج</div>
+                            <div class="option-text">لأنهم يحترمون ما لدي من معرفة وقدرة وخبرة واجتهاد في تقدير الأمور</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q10_c" data-letter="ج" id="q10_c_0" value="0" required>
+                                <label class="radio-label" for="q10_c_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q10_c" data-letter="ج" id="q10_c_1" value="1">
+                                <label class="radio-label" for="q10_c_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q10_c" data-letter="ج" id="q10_c_2" value="2">
+                                <label class="radio-label" for="q10_c_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q10_c" data-letter="ج" id="q10_c_3" value="3">
+                                <label class="radio-label" for="q10_c_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">هـ</div>
+                            <div class="option-text">لأن مركزي في الشركة يمنحني السلطة لإدارة أنشطة أعمالها</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q10_e" data-letter="هـ" id="q10_e_0" value="0" required>
+                                <label class="radio-label" for="q10_e_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q10_e" data-letter="هـ" id="q10_e_1" value="1">
+                                <label class="radio-label" for="q10_e_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q10_e" data-letter="هـ" id="q10_e_2" value="2">
+                                <label class="radio-label" for="q10_e_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q10_e" data-letter="هـ" id="q10_e_3" value="3">
+                                <label class="radio-label" for="q10_e_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 10:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="10">0</span>
+                        <span class="status-badge" data-status="10"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">11</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">د</div>
+                            <div class="option-text">لأنني استطيع الوصول الى معلومات ذات قيمة بالنسبة للآخرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q11_d" data-letter="د" id="q11_d_0" value="0" required>
+                                <label class="radio-label" for="q11_d_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q11_d" data-letter="د" id="q11_d_1" value="1">
+                                <label class="radio-label" for="q11_d_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q11_d" data-letter="د" id="q11_d_2" value="2">
+                                <label class="radio-label" for="q11_d_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q11_d" data-letter="د" id="q11_d_3" value="3">
+                                <label class="radio-label" for="q11_d_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">أ</div>
+                            <div class="option-text">لأنني أستطيع " معاقبة " أولئك الذين لا يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q11_a" data-letter="أ" id="q11_a_0" value="0" required>
+                                <label class="radio-label" for="q11_a_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q11_a" data-letter="أ" id="q11_a_1" value="1">
+                                <label class="radio-label" for="q11_a_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q11_a" data-letter="أ" id="q11_a_2" value="2">
+                                <label class="radio-label" for="q11_a_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q11_a" data-letter="أ" id="q11_a_3" value="3">
+                                <label class="radio-label" for="q11_a_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 11:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="11">0</span>
+                        <span class="status-badge" data-status="11"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 12 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">12</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">هـ</div>
+                            <div class="option-text">لأن مركزي في الشركة يمنحني السلطة لإدارة أنشطة أعمالها</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q12_e" data-letter="هـ" id="q12_e_0" value="0" required>
+                                <label class="radio-label" for="q12_e_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q12_e" data-letter="هـ" id="q12_e_1" value="1">
+                                <label class="radio-label" for="q12_e_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q12_e" data-letter="هـ" id="q12_e_2" value="2">
+                                <label class="radio-label" for="q12_e_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q12_e" data-letter="هـ" id="q12_e_3" value="3">
+                                <label class="radio-label" for="q12_e_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ب</div>
+                            <div class="option-text">لأنهم يدركون بأنني على اتصال بأشخاص يتمتعون بأهمية ونفوذ كبيرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q12_b" data-letter="ب" id="q12_b_0" value="0" required>
+                                <label class="radio-label" for="q12_b_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q12_b" data-letter="ب" id="q12_b_1" value="1">
+                                <label class="radio-label" for="q12_b_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q12_b" data-letter="ب" id="q12_b_2" value="2">
+                                <label class="radio-label" for="q12_b_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q12_b" data-letter="ب" id="q12_b_3" value="3">
+                                <label class="radio-label" for="q12_b_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 12:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="12">0</span>
+                        <span class="status-badge" data-status="12"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 13 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">13</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">و</div>
+                            <div class="option-text">لأنهم يقدرونني ويريدون إرضائي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q13_f" data-letter="و" id="q13_f_0" value="0" required>
+                                <label class="radio-label" for="q13_f_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q13_f" data-letter="و" id="q13_f_1" value="1">
+                                <label class="radio-label" for="q13_f_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q13_f" data-letter="و" id="q13_f_2" value="2">
+                                <label class="radio-label" for="q13_f_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q13_f" data-letter="و" id="q13_f_3" value="3">
+                                <label class="radio-label" for="q13_f_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ج</div>
+                            <div class="option-text">لأنهم يحترمون ما لدي من معرفة وقدرة وخبرة واجتهاد في تقدير الأمور</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q13_c" data-letter="ج" id="q13_c_0" value="0" required>
+                                <label class="radio-label" for="q13_c_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q13_c" data-letter="ج" id="q13_c_1" value="1">
+                                <label class="radio-label" for="q13_c_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q13_c" data-letter="ج" id="q13_c_2" value="2">
+                                <label class="radio-label" for="q13_c_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q13_c" data-letter="ج" id="q13_c_3" value="3">
+                                <label class="radio-label" for="q13_c_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 13:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="13">0</span>
+                        <span class="status-badge" data-status="13"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 14 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">14</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ز</div>
+                            <div class="option-text">لأنني أستطيع مكافئة ودعم / مساندة من يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q14_g" data-letter="ز" id="q14_g_0" value="0" required>
+                                <label class="radio-label" for="q14_g_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q14_g" data-letter="ز" id="q14_g_1" value="1">
+                                <label class="radio-label" for="q14_g_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q14_g" data-letter="ز" id="q14_g_2" value="2">
+                                <label class="radio-label" for="q14_g_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q14_g" data-letter="ز" id="q14_g_3" value="3">
+                                <label class="radio-label" for="q14_g_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ب</div>
+                            <div class="option-text">لأنهم يدركون بأنني على اتصال بأشخاص يتمتعون بأهمية ونفوذ كبيرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q14_b" data-letter="ب" id="q14_b_0" value="0" required>
+                                <label class="radio-label" for="q14_b_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q14_b" data-letter="ب" id="q14_b_1" value="1">
+                                <label class="radio-label" for="q14_b_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q14_b" data-letter="ب" id="q14_b_2" value="2">
+                                <label class="radio-label" for="q14_b_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q14_b" data-letter="ب" id="q14_b_3" value="3">
+                                <label class="radio-label" for="q14_b_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 14:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="14">0</span>
+                        <span class="status-badge" data-status="14"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 15 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">15</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">أ</div>
+                            <div class="option-text">لأنني أستطيع " معاقبة " أولئك الذين لا يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q15_a" data-letter="أ" id="q15_a_0" value="0" required>
+                                <label class="radio-label" for="q15_a_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q15_a" data-letter="أ" id="q15_a_1" value="1">
+                                <label class="radio-label" for="q15_a_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q15_a" data-letter="أ" id="q15_a_2" value="2">
+                                <label class="radio-label" for="q15_a_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q15_a" data-letter="أ" id="q15_a_3" value="3">
+                                <label class="radio-label" for="q15_a_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">هـ</div>
+                            <div class="option-text">لأن مركزي في الشركة يمنحني السلطة لإدارة أنشطة أعمالها</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q15_e" data-letter="هـ" id="q15_e_0" value="0" required>
+                                <label class="radio-label" for="q15_e_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q15_e" data-letter="هـ" id="q15_e_1" value="1">
+                                <label class="radio-label" for="q15_e_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q15_e" data-letter="هـ" id="q15_e_2" value="2">
+                                <label class="radio-label" for="q15_e_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q15_e" data-letter="هـ" id="q15_e_3" value="3">
+                                <label class="radio-label" for="q15_e_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 15:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="15">0</span>
+                        <span class="status-badge" data-status="15"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 16 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">16</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ب</div>
+                            <div class="option-text">لأنهم يدركون بأنني على اتصال بأشخاص يتمتعون بأهمية ونفوذ كبيرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q16_b" data-letter="ب" id="q16_b_0" value="0" required>
+                                <label class="radio-label" for="q16_b_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q16_b" data-letter="ب" id="q16_b_1" value="1">
+                                <label class="radio-label" for="q16_b_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q16_b" data-letter="ب" id="q16_b_2" value="2">
+                                <label class="radio-label" for="q16_b_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q16_b" data-letter="ب" id="q16_b_3" value="3">
+                                <label class="radio-label" for="q16_b_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">و</div>
+                            <div class="option-text">لأنهم يقدرونني ويريدون إرضائي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q16_f" data-letter="و" id="q16_f_0" value="0" required>
+                                <label class="radio-label" for="q16_f_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q16_f" data-letter="و" id="q16_f_1" value="1">
+                                <label class="radio-label" for="q16_f_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q16_f" data-letter="و" id="q16_f_2" value="2">
+                                <label class="radio-label" for="q16_f_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q16_f" data-letter="و" id="q16_f_3" value="3">
+                                <label class="radio-label" for="q16_f_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 16:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="16">0</span>
+                        <span class="status-badge" data-status="16"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 17 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">17</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ج</div>
+                            <div class="option-text">لأنهم يحترمون ما لدي من معرفة وقدرة وخبرة واجتهاد في تقدير الأمور</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q17_c" data-letter="ج" id="q17_c_0" value="0" required>
+                                <label class="radio-label" for="q17_c_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q17_c" data-letter="ج" id="q17_c_1" value="1">
+                                <label class="radio-label" for="q17_c_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q17_c" data-letter="ج" id="q17_c_2" value="2">
+                                <label class="radio-label" for="q17_c_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q17_c" data-letter="ج" id="q17_c_3" value="3">
+                                <label class="radio-label" for="q17_c_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ز</div>
+                            <div class="option-text">لأنني أستطيع مكافئة ودعم / مساندة من يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q17_g" data-letter="ز" id="q17_g_0" value="0" required>
+                                <label class="radio-label" for="q17_g_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q17_g" data-letter="ز" id="q17_g_1" value="1">
+                                <label class="radio-label" for="q17_g_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q17_g" data-letter="ز" id="q17_g_2" value="2">
+                                <label class="radio-label" for="q17_g_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q17_g" data-letter="ز" id="q17_g_3" value="3">
+                                <label class="radio-label" for="q17_g_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 17:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="17">0</span>
+                        <span class="status-badge" data-status="17"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 18 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">18</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">د</div>
+                            <div class="option-text">لأنني استطيع الوصول الى معلومات ذات قيمة بالنسبة للآخرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q18_d" data-letter="د" id="q18_d_0" value="0" required>
+                                <label class="radio-label" for="q18_d_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q18_d" data-letter="د" id="q18_d_1" value="1">
+                                <label class="radio-label" for="q18_d_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q18_d" data-letter="د" id="q18_d_2" value="2">
+                                <label class="radio-label" for="q18_d_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q18_d" data-letter="د" id="q18_d_3" value="3">
+                                <label class="radio-label" for="q18_d_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">و</div>
+                            <div class="option-text">لأنهم يقدرونني ويريدون إرضائي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q18_f" data-letter="و" id="q18_f_0" value="0" required>
+                                <label class="radio-label" for="q18_f_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q18_f" data-letter="و" id="q18_f_1" value="1">
+                                <label class="radio-label" for="q18_f_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q18_f" data-letter="و" id="q18_f_2" value="2">
+                                <label class="radio-label" for="q18_f_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q18_f" data-letter="و" id="q18_f_3" value="3">
+                                <label class="radio-label" for="q18_f_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 18:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="18">0</span>
+                        <span class="status-badge" data-status="18"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 19 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">19</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">هـ</div>
+                            <div class="option-text">لأن مركزي في الشركة يمنحني السلطة لإدارة أنشطة أعمالها</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q19_e" data-letter="هـ" id="q19_e_0" value="0" required>
+                                <label class="radio-label" for="q19_e_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q19_e" data-letter="هـ" id="q19_e_1" value="1">
+                                <label class="radio-label" for="q19_e_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q19_e" data-letter="هـ" id="q19_e_2" value="2">
+                                <label class="radio-label" for="q19_e_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q19_e" data-letter="هـ" id="q19_e_3" value="3">
+                                <label class="radio-label" for="q19_e_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ز</div>
+                            <div class="option-text">لأنني أستطيع مكافئة ودعم / مساندة من يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q19_g" data-letter="ز" id="q19_g_0" value="0" required>
+                                <label class="radio-label" for="q19_g_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q19_g" data-letter="ز" id="q19_g_1" value="1">
+                                <label class="radio-label" for="q19_g_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q19_g" data-letter="ز" id="q19_g_2" value="2">
+                                <label class="radio-label" for="q19_g_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q19_g" data-letter="ز" id="q19_g_3" value="3">
+                                <label class="radio-label" for="q19_g_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 19:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="19">0</span>
+                        <span class="status-badge" data-status="19"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 20 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">20</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">و</div>
+                            <div class="option-text">لأنهم يقدرونني ويريدون إرضائي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q20_f" data-letter="و" id="q20_f_0" value="0" required>
+                                <label class="radio-label" for="q20_f_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q20_f" data-letter="و" id="q20_f_1" value="1">
+                                <label class="radio-label" for="q20_f_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q20_f" data-letter="و" id="q20_f_2" value="2">
+                                <label class="radio-label" for="q20_f_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q20_f" data-letter="و" id="q20_f_3" value="3">
+                                <label class="radio-label" for="q20_f_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">أ</div>
+                            <div class="option-text">لأنني أستطيع " معاقبة " أولئك الذين لا يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q20_a" data-letter="أ" id="q20_a_0" value="0" required>
+                                <label class="radio-label" for="q20_a_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q20_a" data-letter="أ" id="q20_a_1" value="1">
+                                <label class="radio-label" for="q20_a_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q20_a" data-letter="أ" id="q20_a_2" value="2">
+                                <label class="radio-label" for="q20_a_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q20_a" data-letter="أ" id="q20_a_3" value="3">
+                                <label class="radio-label" for="q20_a_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 20:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="20">0</span>
+                        <span class="status-badge" data-status="20"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 21 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-number">21</div>
+                    <div class="question-title">اختر القيم المناسبة (المجموع = 3)</div>
+                </div>
+                <div class="options-group">
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">ز</div>
+                            <div class="option-text">لأنني أستطيع مكافئة ودعم / مساندة من يتعاونون معي</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q21_g" data-letter="ز" id="q21_g_0" value="0" required>
+                                <label class="radio-label" for="q21_g_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q21_g" data-letter="ز" id="q21_g_1" value="1">
+                                <label class="radio-label" for="q21_g_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q21_g" data-letter="ز" id="q21_g_2" value="2">
+                                <label class="radio-label" for="q21_g_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q21_g" data-letter="ز" id="q21_g_3" value="3">
+                                <label class="radio-label" for="q21_g_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="option-item">
+                        <div class="option-header">
+                            <div class="option-code">د</div>
+                            <div class="option-text">لأنني استطيع الوصول الى معلومات ذات قيمة بالنسبة للآخرين</div>
+                        </div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="q21_d" data-letter="د" id="q21_d_0" value="0" required>
+                                <label class="radio-label" for="q21_d_0">0</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q21_d" data-letter="د" id="q21_d_1" value="1">
+                                <label class="radio-label" for="q21_d_1">1</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q21_d" data-letter="د" id="q21_d_2" value="2">
+                                <label class="radio-label" for="q21_d_2">2</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="q21_d" data-letter="د" id="q21_d_3" value="3">
+                                <label class="radio-label" for="q21_d_3">3</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sum-indicator">
+                    <span class="sum-label">مجموع السؤال 21:</span>
+                    <div class="sum-value-wrapper">
+                        <span class="sum-value neutral" data-sum="21">0</span>
+                        <span class="status-badge" data-status="21"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Summary Section -->
+            <div class="summary-section">
+                <h3>📊 ملخص النتائج لكل حرف</h3>
+                <div class="totals-grid">
+                    <div class="total-item" data-letter-total="أ">
+                        <div class="total-letter">أ</div>
+                        <div class="total-value">0</div>
+                    </div>
+                    <div class="total-item" data-letter-total="ب">
+                        <div class="total-letter">ب</div>
+                        <div class="total-value">0</div>
+                    </div>
+                    <div class="total-item" data-letter-total="ج">
+                        <div class="total-letter">ج</div>
+                        <div class="total-value">0</div>
+                    </div>
+                    <div class="total-item" data-letter-total="د">
+                        <div class="total-letter">د</div>
+                        <div class="total-value">0</div>
+                    </div>
+                    <div class="total-item" data-letter-total="هـ">
+                        <div class="total-letter">هـ</div>
+                        <div class="total-value">0</div>
+                    </div>
+                    <div class="total-item" data-letter-total="و">
+                        <div class="total-letter">و</div>
+                        <div class="total-value">0</div>
+                    </div>
+                    <div class="total-item" data-letter-total="ز">
+                        <div class="total-letter">ز</div>
+                        <div class="total-value">0</div>
+                    </div>
+                </div>
+                <div class="grand-total" id="grandTotal">
+                    <div class="grand-total-label">💎 المجموع الكلي النهائي (يجب أن يساوي 63)</div>
+                    <div class="grand-total-value">0</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-footer">
+            <div class="progress-info">
+                الأسئلة المكتملة: <strong><span id="completedCount">0</span> / 21</strong>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <button type="submit" class="submit-button" id="submitBtn" disabled>
+                ✓ إرسال النموذج
+            </button>
+        </div>
+    </form>
+
+    <script>
+        const TOTAL_QUESTIONS = 21;
+
+        const REQUIRED_GRAND_TOTAL = 63;
+
+        // Calculate letter totals
+        function calculateLetterTotals() {
+            const letterTotals = {
+                'أ': 0,
+                'ب': 0,
+                'ج': 0,
+                'د': 0,
+                'هـ': 0,
+                'و': 0,
+                'ز': 0
+            };
+
+            document.querySelectorAll('input[type="radio"]:checked').forEach(radio => {
+                const letter = radio.getAttribute('data-letter');
+                const value = parseInt(radio.value);
+                if (letter && !isNaN(value)) {
+                    letterTotals[letter] += value;
+                }
+            });
+
+            return letterTotals;
+        }
+
+        // Update letter totals display
+        function updateLetterTotals() {
+            const letterTotals = calculateLetterTotals();
+            const grandTotal = Object.values(letterTotals).reduce((a, b) => a + b, 0);
+
+            // Find maximum value(s)
+            const maxValue = Math.max(...Object.values(letterTotals));
+
+            // Update each letter display
+            Object.keys(letterTotals).forEach(letter => {
+                const totalItem = document.querySelector(`[data-letter-total="${letter}"]`);
+                if (totalItem) {
+                    const totalValue = totalItem.querySelector('.total-value');
+                    totalValue.textContent = letterTotals[letter];
+
+                    // Highlight if this is the highest value
+                    if (letterTotals[letter] === maxValue && maxValue > 0) {
+                        totalItem.classList.add('highest');
+                    } else {
+                        totalItem.classList.remove('highest');
+                    }
+                }
+            });
+
+            // Update grand total
+            const grandTotalElement = document.getElementById('grandTotal');
+            if (grandTotalElement) {
+                const grandTotalValue = grandTotalElement.querySelector('.grand-total-value');
+                grandTotalValue.textContent = grandTotal;
+
+                // Update grand total styling
+                grandTotalElement.classList.remove('valid', 'invalid');
+                if (grandTotal === REQUIRED_GRAND_TOTAL) {
+                    grandTotalElement.classList.add('valid');
+                } else if (grandTotal > 0) {
+                    grandTotalElement.classList.add('invalid');
+                }
+            }
+
+            return grandTotal;
+        }
+
+        const form = document.getElementById('surveyForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const alertContainer = document.getElementById('alert-container');
+        const progressFill = document.getElementById('progressFill');
+        const completedCount = document.getElementById('completedCount');
+
+        // Questions configuration
+        const questions = [
+            { num: 1, options: ['q1_a', 'q1_b'] },
+            { num: 2, options: ['q2_c', 'q2_d'] },
+            { num: 3, options: ['q3_e', 'q3_f'] },
+            { num: 4, options: ['q4_g', 'q4_a'] },
+            { num: 5, options: ['q5_b', 'q5_c'] },
+            { num: 6, options: ['q6_d', 'q6_e'] },
+            { num: 7, options: ['q7_f', 'q7_g'] },
+            { num: 8, options: ['q8_a', 'q8_c'] },
+            { num: 9, options: ['q9_b', 'q9_d'] },
+            { num: 10, options: ['q10_c', 'q10_e'] },
+            { num: 11, options: ['q11_d', 'q11_a'] },
+            { num: 12, options: ['q12_e', 'q12_b'] },
+            { num: 13, options: ['q13_f', 'q13_c'] },
+            { num: 14, options: ['q14_g', 'q14_b'] },
+            { num: 15, options: ['q15_a', 'q15_e'] },
+            { num: 16, options: ['q16_b', 'q16_f'] },
+            { num: 17, options: ['q17_c', 'q17_g'] },
+            { num: 18, options: ['q18_d', 'q18_f'] },
+            { num: 19, options: ['q19_e', 'q19_g'] },
+            { num: 20, options: ['q20_f', 'q20_a'] },
+            { num: 21, options: ['q21_g', 'q21_d'] }
+        ];
+
+        // Calculate sum for a question
+        function calculateSum(questionNum) {
+            const question = questions.find(q => q.num === questionNum);
+            let sum = 0;
+            let allFilled = true;
+
+            question.options.forEach(optionName => {
+                const selected = document.querySelector(`input[name="${optionName}"]:checked`);
+                if (!selected) {
+                    allFilled = false;
+                } else {
+                    sum += parseInt(selected.value);
+                }
+            });
+
+            return { sum, allFilled };
+        }
+
+        // Update sum display for a question
+        function updateSumDisplay(questionNum) {
+            const { sum, allFilled } = calculateSum(questionNum);
+            const sumElement = document.querySelector(`[data-sum="${questionNum}"]`);
+            const statusElement = document.querySelector(`[data-status="${questionNum}"]`);
+
+            sumElement.textContent = sum;
+            sumElement.classList.remove('valid', 'invalid', 'neutral');
+            statusElement.classList.remove('valid', 'invalid');
+            statusElement.textContent = '';
+
+            if (!allFilled) {
+                sumElement.classList.add('neutral');
+            } else if (sum === 3) {
+                sumElement.classList.add('valid');
+                statusElement.classList.add('valid');
+                statusElement.textContent = '✓ صحيح';
+            } else {
+                sumElement.classList.add('invalid');
+                statusElement.classList.add('invalid');
+                statusElement.textContent = sum > 3 ? '✗ أكثر من 3' : '✗ أقل من 3';
+            }
+        }
+
+        // Check if all questions are valid
+        function checkAllValid() {
+            let validCount = 0;
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const { sum, allFilled } = calculateSum(i);
+                if (allFilled && sum === 3) {
+                    validCount++;
+                }
+            }
+
+            // Update progress
+            const percentage = (validCount / TOTAL_QUESTIONS) * 100;
+            progressFill.style.width = percentage + '%';
+            completedCount.textContent = validCount;
+
+            // Update letter totals
+            const grandTotal = updateLetterTotals();
+
+            // Enable/disable submit button
+            const allQuestionsValid = validCount === TOTAL_QUESTIONS;
+            const grandTotalValid = grandTotal === REQUIRED_GRAND_TOTAL;
+            submitBtn.disabled = !(allQuestionsValid && grandTotalValid);
+
+            return allQuestionsValid && grandTotalValid;
+        }
+
+
+        // Helper function to show remaining points for a question
+        function showRemainingPoints(questionNum) {
+            const { sum } = calculateSum(questionNum);
+            const remaining = 3 - sum;
+            return remaining;
+        }
+
+        // Add event listeners to all radio buttons with validation
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const questionNum = parseInt(e.target.name.match(/\d+/)[0]);
+                const currentOption = e.target.name;
+                const currentValue = parseInt(e.target.value);
+                
+                // Check if sum will exceed 3
+                const question = questions.find(q => q.num === questionNum);
+                let otherValue = 0;
+                
+                question.options.forEach(optionName => {
+                    if (optionName !== currentOption) {
+                        const selected = document.querySelector(`input[name="${optionName}"]:checked`);
+                        if (selected) {
+                            otherValue = parseInt(selected.value);
+                        }
+                    }
+                });
+                
+                // If sum exceeds 3, prevent and alert
+                if (currentValue + otherValue > 3) {
+                    e.target.checked = false;
+                    alert(`⚠️ تنبيه!\n\nالمجموع لا يمكن أن يتجاوز 3\n\nالخيار الآخر = ${otherValue}\nحاولت اختيار = ${currentValue}\nالمجموع = ${currentValue + otherValue} ❌\n\nيرجى اختيار قيمة أقل`);
+                    return;
+                }
+                
+                updateSumDisplay(questionNum);
+                checkAllValid();
+            });
+        });
+
+        // Handle form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (checkAllValid()) {
+                const letterTotals = calculateLetterTotals();
+                const grandTotal = Object.values(letterTotals).reduce((a, b) => a + b, 0);
+                
+                // Prepare results summary
+                let resultsHTML = '<strong>📊 النتائج النهائية:</strong><br><br>';
+                Object.keys(letterTotals).forEach(letter => {
+                    resultsHTML += `الحرف ${letter}: ${letterTotals[letter]}<br>`;
+                });
+                resultsHTML += `<br><strong>💎 المجموع الكلي: ${grandTotal} / 63</strong>`;
+
+                alertContainer.innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>✓ تم إرسال النموذج بنجاح!</strong><br>
+                        جميع الإجابات صحيحة ومطابقة للشروط المطلوبة.<br><br>
+                        ${resultsHTML}
+                    </div>
+                `;
+                
+                // Save to localStorage for tracking all responses
+                const timestamp = new Date().toISOString();
+                const responses = JSON.parse(localStorage.getItem('surveyResponses') || '[]');
+                responses.push({
+                    timestamp: timestamp,
+                    letterTotals: letterTotals,
+                    grandTotal: grandTotal
+                });
+                localStorage.setItem('surveyResponses', JSON.stringify(responses));
+                
+                console.log('✅ تم حفظ الاستجابة:', {
+                    timestamp,
+                    letterTotals,
+                    grandTotal
+                });
+                console.log('📝 إجمالي الاستجابات المحفوظة:', responses.length);
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                const grandTotal = Object.values(calculateLetterTotals()).reduce((a, b) => a + b, 0);
+                let errorMessage = '<strong>يرجى التأكد من:</strong><br>';
+                errorMessage += '• إكمال جميع الأسئلة بشكل صحيح<br>';
+                errorMessage += '• مجموع كل سؤال = 3 بالضبط<br>';
+                errorMessage += `• المجموع الكلي النهائي = 63 (حالياً: ${grandTotal})`;
+
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger">
+                        <strong>✗ خطأ في النموذج!</strong><br><br>
+                        ${errorMessage}
+                    </div>
+                `;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        // Initialize all sums on page load
+        for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+            updateSumDisplay(i);
+        }
+        updateLetterTotals();
+        checkAllValid();
+
+        // Console helpers for viewing saved data
+        console.log('%c📊 استبيان القوة - نظام حفظ النتائج', 'font-size: 16px; font-weight: bold; color: #1e3c72;');
+        console.log('✅ لعرض جميع الاستجابات المحفوظة، استخدم:');
+        console.log('   JSON.parse(localStorage.getItem("surveyResponses"))');
+        console.log('🗑️ لحذف جميع الاستجابات، استخدم:');
+        console.log('   localStorage.removeItem("surveyResponses")');
+        
+        const savedResponses = JSON.parse(localStorage.getItem('surveyResponses') || '[]');
+        console.log(`📝 عدد الاستجابات المحفوظة حالياً: ${savedResponses.length}`);
+    </script>
+</body>
+</html>
